@@ -54,7 +54,7 @@ Sabine gibt die index.html **direkt im Chatfenster**. Das kommt auf zwei Arten a
   suchen (`mdfind -name index.html`, neueste zuerst, `ls -lt`) und von dort kopieren, sonst Sabine
   bitten, die Datei ins Terminal-Fenster zu ziehen (dann kommt der Pfad).
 
-Danach die **Bilder** klären: `grep -oE '(src|href|url\()["'\'']?[^"'\'' )>]+\.(jpe?g|png|webp|gif|svg|avif|mp4)' original/index.html`
+Danach die **Bilder** klären: `grep -oE '(src|href|url\()=?["'\'']?[^"'\''()<>]+\.(jpe?g|png|webp|gif|svg|avif|mp4)' original/index.html`
 zeigt, welche lokalen Dateien die Seite braucht (Adressen mit `http` und `data:` sind schon drin).
 Fehlen welche: erst selbst suchen (Ordner der Datei, Schreibtisch, Downloads, Dokumente:
 `mdfind -name "<dateiname>"`), gefundene Dateien relativ zu `original/` so ablegen, wie die Seite
