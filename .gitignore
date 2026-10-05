@@ -1,0 +1,12 @@
+# Zugangsdaten
+.env
+.env.*
+!.env.beispiel
+
+# erzeugt
+dist/
+site/wordpress-info.json
+__pycache__/
+*.pyc
+.playwright-mcp/
+.DS_Store
