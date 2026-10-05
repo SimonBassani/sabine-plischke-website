@@ -42,9 +42,24 @@ bitten, den Haken zu entfernen, oder es mit ihrem Einverständnis selbst über d
 
 ### 2. Datei übernehmen
 
-Die Datei bzw. den Ordner aus dem Prompt nach `original/` kopieren (Bilderordner mit, Pfade wie im
-Original). Fehlt ein Bild: im Ordner der Datei und dessen Unterordnern suchen
-(`find "<ordner>" -iname "<name>"`), erst dann Sabine fragen.
+Sabine gibt die index.html **direkt im Chatfenster**. Das kommt auf zwei Arten an:
+
+- **Als Dateipfad** (Datei ins Terminal gezogen, z. B. `/Users/…/index.html`): die Datei mit `cp`
+  nach `original/index.html` kopieren. Liegt daneben ein Bilderordner, den mitkopieren (Pfade wie
+  im Original). Den Ordner der Datei merken, er ist der Suchort für Bilder.
+- **Als angehängter Inhalt** (Claude-App, kein Pfad sichtbar): den Inhalt **unverändert, Zeichen für
+  Zeichen** mit dem Write-Werkzeug nach `original/index.html` schreiben. Nichts kürzen, nichts
+  umformatieren. Danach prüfen, dass die Datei vollständig ist (`tail -c 200 original/index.html`
+  endet mit `</html>`; Größe plausibel). Wirkt der Inhalt abgeschnitten: die Datei auf dem Rechner
+  suchen (`mdfind -name index.html`, neueste zuerst, `ls -lt`) und von dort kopieren, sonst Sabine
+  bitten, die Datei ins Terminal-Fenster zu ziehen (dann kommt der Pfad).
+
+Danach die **Bilder** klären: `grep -oE '(src|href|url\()["'\'']?[^"'\'' )>]+\.(jpe?g|png|webp|gif|svg|avif|mp4)' original/index.html`
+zeigt, welche lokalen Dateien die Seite braucht (Adressen mit `http` und `data:` sind schon drin).
+Fehlen welche: erst selbst suchen (Ordner der Datei, Schreibtisch, Downloads, Dokumente:
+`mdfind -name "<dateiname>"`), gefundene Dateien relativ zu `original/` so ablegen, wie die Seite
+sie erwartet. Nur was dann noch fehlt, bei Sabine erfragen („Zieh bitte den Ordner mit deinen
+Bildern hier ins Fenster“). Ohne alle Bilder nicht veröffentlichen.
 
 ### 3. Importieren und technisch anpassen
 

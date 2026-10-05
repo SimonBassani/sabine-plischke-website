@@ -18,11 +18,12 @@ cd ~/Documents && git clone https://github.com/SimonBassani/sabine-plischke-webs
 Claude startet im richtigen Ordner. Fragt es, ob es dem Ordner vertrauen und den Browser-Helfer
 „playwright“ nutzen darf: beides mit Ja bestätigen.
 
-**2. Diesen Text in Claude einfügen**, die Datei ins Fenster ziehen und die Adresse ergänzen:
+**2. Diesen Text in Claude einfügen**, deine Adresse eintragen und deine `index.html` mit ins
+Fenster ziehen (Bilder, die nicht in der Datei stecken, gleich mit):
 
 ```
 /erster-durchgang
-Meine Website-Datei: [index.html bzw. den Ordner mit index.html und Bildern hier ins Fenster ziehen]
+Hier ist meine Website-Datei (index.html, siehe Anhang).
 Meine WordPress-Adresse: https://
 Übernimm meine index.html genau so, wie sie ist, mit allen Effekten, und veröffentliche sie auf
 meiner WordPress-Seite. Ändere nichts an Texten, Design oder Effekten. Wenn technisch etwas nicht
