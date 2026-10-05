@@ -28,6 +28,7 @@ Dann eine fertige Nachricht für Sabine formulieren: was passiert ist, was versu
 | Symptom | Ursache | Lösung |
 |---|---|---|
 | `check`: „Anmeldung abgelehnt“ (401), Daten stimmen aber | Hoster entfernt den `Authorization`-Header (Apache mit CGI/FastCGI) | Prüfen: `curl -s -o /dev/null -w "%{http_code}" -u "user:pw" <WP_URL>/wp-json/wp/v2/users/me`. Fix in `.htaccess`: `SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1` (braucht Datei-Zugang über den Hoster → Simon). |
+| Hoster **united-domains** (Managed WordPress) | normales WordPress mit Admin-Zugang, automatische Updates; SSH/SFTP erst ab Tarif Pro (Stand 10/2026, Testberichte) | Für dieses System reicht der WP-Admin, FTP wird nicht gebraucht. Braucht ein Fehler doch eine Datei-Änderung (`.htaccess`, siehe Zeile oben) und der Tarif ist Basis: united-domains-Support anfragen (Text für Sabine vorformulieren) oder Simon |
 | 401 trotz richtiger Daten, Wordfence aktiv | Wordfence sperrt Anwendungspasswörter | Wordfence → Login Security → Settings → „Disable WordPress application passwords“ aus |
 | Bereich „Anwendungspasswörter“ fehlt im Profil | Sicherheits-Plugin, kein HTTPS, oder WordPress.com-Tarif ohne Plugins | Plugin-Einstellung (Wordfence, Solid Security, All In One WP Security) suchen; bei WordPress.com Tarif prüfen |
 | 403 beim `push`, aber `check` ok | Firewall des Hosters (ModSecurity) blockt Inhalte mit `<script>` | Hoster-Hilfe zu „ModSecurity“/„WAF“ suchen; oft im Kundenmenü abschaltbar oder Ausnahme für `/wp-json/` (Sabine anleiten); sonst Simon |
