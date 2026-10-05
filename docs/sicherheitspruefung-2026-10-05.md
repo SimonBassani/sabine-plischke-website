@@ -35,7 +35,9 @@ und in einer Browser-Simulation mit Elementor-Kit-CSS geprüft.
 - `subprocess.run(["node","--check",tmp])` (`:426`): Liste, keine Shell, `--check` führt nichts aus.
 - Upload-Dateiname wird auf `[A-Za-z0-9._-]` reduziert (`:640`), keine Header-Injektion.
 - Live-Schaltung (`live`, `startseite`, Änderung live geschalteter Seiten) nur mit ausdrücklichem
-  Schalter; diese Befehle sind in `.claude/settings.json` bewusst nicht freigegeben (Rückfrage).
+  Schalter (`--ja`, `--ja-live`). Seit dem Ablauf „erster Durchgang“ sind die Befehle in
+  `.claude/settings.json` freigegeben, damit Sabines Veröffentlichungsauftrag ohne Klick-Rückfragen
+  durchläuft. Schutz ist damit die Regel in `CLAUDE.md` (nur nach Sabines Ja), nicht die Rechteabfrage.
 - Schutz gegen Überschreiben fremder Änderungen in WordPress (`modified_gmt`-Vergleich), live geprüft.
 - Vorschau-Passwort: 48 Bit Zufall (`secrets`, `:990`), nur für die Vorschau, nicht wiederverwenden.
 - `.mcp.json`: `@playwright/mcp@0.0.80` exakt gepinnt (gleiche Version wie bei DigiUp im Einsatz).

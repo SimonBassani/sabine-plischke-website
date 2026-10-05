@@ -141,6 +141,7 @@ def config() -> dict:
     c.setdefault("css_extern", [])
     c.setdefault("skripte_extern", [])
     c.setdefault("body_klassen", [])
+    c.setdefault("html_klassen", [])
     c.setdefault("theme_ausblenden", [])
     return c
 
@@ -509,8 +510,8 @@ def bauen(slug: str, modus: str = "wp", medien: dict | None = None) -> dict:
         fail(f"seiten/{slug}/inhalt.html ist leer.")
     kopf = lies(SITE / "kopf.html").strip() if s.get("kopf", True) else ""
     fuss = lies(SITE / "fuss.html").strip() if s.get("fuss", True) else ""
-    if not re.search(r"<main\b", inhalt, re.I):
-        inhalt = f'<main id="inhalt">\n{inhalt}\n</main>'
+    # Kein automatisches <main>: importierte Seiten bleiben 1:1 (CSS wie "body > section" muss greifen).
+    # Neue Seiten bringen <main> über seiten/_vorlage/inhalt.html mit.
     koerper = "\n".join(x for x in (kopf, inhalt, fuss) if x)
 
     fehler, fallbacks = [], []
@@ -532,6 +533,9 @@ def bauen(slug: str, modus: str = "wp", medien: dict | None = None) -> dict:
         css = ", ".join(cfg["theme_ausblenden"]) + "{display:none!important}\n" + css
 
     starter = "document.documentElement.classList.add('js');"
+    if cfg["html_klassen"]:
+        starter += "document.documentElement.classList.add(" + ",".join(
+            json.dumps(k) for k in cfg["html_klassen"]) + ");"
     if cfg["body_klassen"]:
         starter += "document.body.classList.add(" + ",".join(json.dumps(k) for k in cfg["body_klassen"]) + ");"
     skripte = [f"<script>{starter}</script>"]
@@ -1188,6 +1192,13 @@ def cmd_importieren(a):
         body_attrs, body = "", re.sub(r"<head\b.*?</head>", "", html, flags=re.S | re.I)
     klassen = _attr("<x " + body_attrs + ">", "class").split()
     cfg["body_klassen"] = klassen
+    html_tag = re.search(r"<html\b[^>]*>", html, re.I)
+    html_klassen = [k for k in _attr(html_tag.group(0), "class").split() if k != "no-js"] if html_tag else []
+    cfg["html_klassen"] = html_klassen
+    if html_tag and re.search(r"\bno-js\b", html_tag.group(0)):
+        notizen.append("<html class=\"no-js\">: das Startskript setzt stattdessen die Klasse 'js'.")
+    if html_tag and re.search(r"\bdata-[\w-]+=", html_tag.group(0)):
+        notizen.append("Attribute am <html>-Tag (data-…) gefunden: prüfen, ob Skripte oder CSS sie brauchen.")
     if klassen:
         notizen.append(f"Klassen am <body> ({' '.join(klassen)}) setzt künftig ein Startskript.")
     if _attr("<x " + body_attrs + ">", "style"):

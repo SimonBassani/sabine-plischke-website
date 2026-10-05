@@ -7,46 +7,41 @@ geschützte Vorschau. Öffentlich wird erst etwas, wenn du ausdrücklich Ja sags
 
 Eingerichtet von Simon Bassani, DigiUp Consulting (office@digi-up.at).
 
-## Loslegen (einmalig, ca. 15 Minuten)
+## Loslegen (einmalig)
 
-**1. GitHub-Einladung annehmen.** Du bekommst eine E-Mail von GitHub, „Accept invitation“ klicken.
-Noch kein GitHub-Konto? Kostenlos auf github.com anlegen und Simon deinen Benutzernamen schicken.
-
-**2. Claude Code öffnen.** Entweder im Terminal `claude` eintippen oder in der Claude-App den
-Bereich „Code“ öffnen.
-
-**3. Dieses Projekt holen.** Schreib Claude:
-
-> Hol dir bitte https://github.com/SimonBassani/sabine-plischke-website in meinen Ordner
-> Dokumente und sag mir, wie ich das Projekt dann öffne.
-
-Oder selbst im Terminal:
+**1. Terminal öffnen** (Mac: ⌘ + Leertaste, „Terminal“ tippen, Enter), diese Zeile hineinkopieren, Enter:
 
 ```bash
-cd ~/Documents
-git clone https://github.com/SimonBassani/sabine-plischke-website.git
-cd sabine-plischke-website
-claude
+cd ~/Documents && git clone https://github.com/SimonBassani/sabine-plischke-website.git && cd sabine-plischke-website && claude
 ```
 
-Wichtig: Claude muss **im Ordner `sabine-plischke-website`** gestartet sein, sonst kennt es die
-Befehle unten nicht. Beim ersten Start fragt Claude, ob es dem Ordner vertrauen und den
-Browser-Helfer „playwright“ nutzen darf: beides mit Ja bestätigen.
+Claude startet im richtigen Ordner. Fragt es, ob es dem Ordner vertrauen und den Browser-Helfer
+„playwright“ nutzen darf: beides mit Ja bestätigen.
 
-**4. Startassistent.** Tippe:
+**2. Diesen Text in Claude einfügen**, die Datei ins Fenster ziehen und die Adresse ergänzen:
 
 ```
-/einrichten
+/erster-durchgang
+Meine Website-Datei: [index.html bzw. den Ordner mit index.html und Bildern hier ins Fenster ziehen]
+Meine WordPress-Adresse: https://
+Übernimm meine index.html genau so, wie sie ist, mit allen Effekten, und veröffentliche sie auf
+meiner WordPress-Seite. Ändere nichts an Texten, Design oder Effekten. Wenn technisch etwas nicht
+klappt, such selbst nach einer Lösung. Deine Fragen und Vorschläge bitte erst, wenn die Seite online ist.
 ```
 
-Claude führt dich durch alles Weitere: Zugangsschlüssel für WordPress anlegen, Verbindung testen,
-deine `index.html` übernehmen. Danach geht es mit `/importieren` weiter.
+Claude richtet alles ein. Einmal brauchst du deinen WordPress-Login: Claude zeigt dir Schritt für
+Schritt, wie du einen Zugangsschlüssel („Anwendungspasswort“) anlegst. Danach läuft es von allein,
+bis die Seite online ist, und dann kommen Claudes Fragen.
+
+**Später** einfach im Terminal `cd ~/Documents/sabine-plischke-website && claude` und schreiben, was
+du möchtest.
 
 ## Die Befehle
 
 | Tippe | Was passiert |
 |---|---|
-| `/einrichten` | Startassistent (einmalig, oder auf einem neuen Rechner) |
+| `/erster-durchgang` | Start: deine index.html 1:1 übernehmen und veröffentlichen, danach Fragen |
+| `/einrichten` | nur die Einrichtung, z. B. auf einem neuen Rechner |
 | `/importieren` | Deine index.html wird zur WordPress-Seite und als geschützte Vorschau hochgeladen |
 | `/neue-seite` | Neue Unterseite im gleichen Design, mit Menüeintrag |
 | `/veroeffentlichen` | Seiten öffentlich schalten; Relaunch der ganzen Website (mit Simon) |

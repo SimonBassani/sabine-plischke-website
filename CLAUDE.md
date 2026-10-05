@@ -19,14 +19,18 @@ lernen. Deshalb:
   wie es technisch funktioniert. Kein „REST“, „Slug“, „Commit“, „Push“ ohne Übersetzung
   (Adresse der Seite, Stand speichern, nach WordPress schicken).
 - Pro Schritt eine Sache. Am Ende jedes Schritts sagen, was als Nächstes kommt.
-- Wenn etwas schiefgeht: ruhig benennen, was los ist, und den nächsten Schritt vorschlagen. Bei
-  Zugangsproblemen, Hosting oder Unklarheit: „Das klären wir mit Simon“ (office@digi-up.at).
+- Wenn etwas schiefgeht: **selbst eine Lösung suchen**, nicht Sabine fragen, was zu tun ist.
+  Vorgehen und bekannte Probleme: `.claude/skills/wordpress/references/fehlerbehebung.md`, gelöste
+  Fälle in `docs/lehren.md`, sonst Websuche und Doku. Sabine nur einbeziehen, wenn ein Klick in ihrem
+  Konto nötig ist (dann genaue Anleitung). Simon (office@digi-up.at) erst bei fehlenden Zugängen,
+  Kosten, Rechtsfragen oder wenn nach Recherche und zwei Versuchen kein Weg da ist.
 
 ## Die Befehle
 
 | Befehl | Wofür |
 |---|---|
-| `/einrichten` | Startassistent beim allerersten Mal (Zugang, Prüfung, index.html übernehmen) |
+| `/erster-durchgang` | **Start:** Einrichtung, index.html 1:1 übernehmen, prüfen, veröffentlichen, danach Fragen |
+| `/einrichten` | nur die Einrichtung (Zugang, Prüfung), z. B. auf einem neuen Rechner |
 | `/importieren` | eine fertige `index.html` in WordPress-taugliche Bausteine zerlegen und als Vorschau hochladen |
 | `/neue-seite` | Unterseite anlegen (z. B. Über mich, Angebot, Kontakt) |
 | `/veroeffentlichen` | Seiten öffentlich schalten, Relaunch-Checkliste |
@@ -60,6 +64,11 @@ Konventionen:
 
 1. **Nichts wird ohne Sabines ausdrückliches Ja öffentlich.** Standard ist die passwortgeschützte
    Vorschau (`push`). `live`, `startseite` und `push --ja-live` nur nach klarer Zustimmung im Chat.
+   Ausnahme: Mit `/erster-durchgang` bzw. dem Startprompt hat sie das Veröffentlichen ihrer
+   index.html bereits beauftragt (Ablauf und Grenzen im Skill).
+1a. **Ihre index.html ist die Vorlage, nicht der Entwurf.** Im ersten Durchgang nichts an Text,
+   Design oder Effekten ändern, nur unsichtbare technische Anpassungen. Auffälligkeiten sammeln und
+   nach dem Veröffentlichen als Fragen stellen. Später ändert sich nur, was Sabine will.
 2. **Kein `&` in JavaScript.** WordPress macht beim Ausliefern `&#038;` daraus und das Skript ist
    tot. Das Werkzeug bricht dann ab. `if(a&&b)` wird `if(a)if(b)`. Auch in Kommentaren.
 3. **Lokal grün heißt nicht live grün.** Nach jedem Push die echte Seite im Browser prüfen
@@ -71,10 +80,14 @@ Konventionen:
 6. **Keine Zugangsdaten ins Repo.** Sie stehen nur in `.env` (ist in `.gitignore`). `.env` nie
    anzeigen, nie in den Chat kopieren, nie committen.
 7. **Keine Google Fonts, keine Einbettungen ohne Einwilligung** (YouTube, Google Maps, Facebook-Pixel).
-   Schriften über `fonts.bunny.net`. Einbettungen nur nach Rücksprache mit Simon (Cookie-Einwilligung).
+   Schriften über `fonts.bunny.net`. Neue Einbettungen nur nach Rücksprache mit Simon (Cookie-Einwilligung).
+   Stehen Einbettungen schon in ihrer index.html: im ersten Durchgang nicht ändern, aber als oberste
+   Frage danach (DSGVO-Risiko).
 8. **Bestehende Seiten nicht anfassen.** Was schon in WordPress steht und nicht aus diesem Repo
    kommt (alte Seiten, Beiträge, Plugins, Menüs), bleibt unverändert, bis der Umstieg gemeinsam mit
-   Simon live geht. Nichts in WordPress löschen. Plugins, Updates, Hosting: Sache von Simon.
+   Simon live geht. Nichts in WordPress löschen. Plugin-Einstellungen nur ändern, wenn es zur Lösung
+   eines Problems nötig, umkehrbar und in `docs/lehren.md` notiert ist. Plugins installieren,
+   löschen, Updates, Hosting: Sache von Simon.
 
 ## Gemeinsam arbeiten (Sabine und Simon)
 
