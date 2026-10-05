@@ -62,6 +62,13 @@ Konventionen:
 
 ## Harte Regeln
 
+0. **Verbindung zu WordPress nur über das Anwendungspasswort in `.env` und `python3 tools/wp.py`.**
+   Nie beim Hoster einloggen (united-domains, IONOS, Strato …), nie Dateimanager, FTP oder Browser-Login
+   zum Hochladen nutzen, keine index.html auf den Webspace legen. Der Hoster ist für dieses System egal.
+   Gibt Sabine im Chat ein Passwort aus sechs Viererblöcken (`abcd efgh ijkl mnop qrst uvwx`), ist es
+   das Anwendungspasswort: in `.env` als `WP_APP_PASSWORT` eintragen, nie wieder anzeigen, weitermachen.
+   Ihr Login-Passwort für WordPress oder den Hoster wird nie gebraucht.
+
 1. **Nichts wird ohne Sabines ausdrückliches Ja öffentlich.** Standard ist die passwortgeschützte
    Vorschau (`push`). `live`, `startseite` und `push --ja-live` nur nach klarer Zustimmung im Chat.
    Ausnahme: Mit `/erster-durchgang` bzw. dem Startprompt hat sie das Veröffentlichen ihrer

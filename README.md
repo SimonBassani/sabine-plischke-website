@@ -30,6 +30,9 @@ meiner WordPress-Seite. Ändere nichts an Texten, Design oder Effekten. Wenn tec
 klappt, such selbst nach einer Lösung. Deine Fragen und Vorschläge bitte erst, wenn die Seite online ist.
 ```
 
+Wichtig: Claude muss im Ordner `sabine-plischke-website` laufen (Schritt 1), nicht in der Claude-App
+oder im Browser. Bei deinem Hoster musst du dich nicht einloggen.
+
 Claude richtet alles ein. Einmal brauchst du deinen WordPress-Login: Claude zeigt dir Schritt für
 Schritt, wie du einen Zugangsschlüssel („Anwendungspasswort“) anlegst. Danach läuft es von allein,
 bis die Seite online ist, und dann kommen Claudes Fragen.
