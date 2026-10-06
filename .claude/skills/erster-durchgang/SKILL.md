@@ -103,7 +103,9 @@ Startseite: In `site/wordpress-info.json` nachsehen (`startseite`, `seiten`).
   Musterseiten („Beispiel-Seite“, „Datenschutzerklärung“-Entwurf) keine veröffentlichten Seiten:
   `python3 tools/wp.py startseite start --ja`, dann `python3 tools/wp.py push --alle --ja-live`.
   Die ausgegebenen alten Werte in `docs/lehren.md` notieren (zum Zurückstellen).
-- Gibt es schon eine richtige Website mit eigener Startseite: **nicht** ersetzen. Die neue Seite ist
+- Steht im Prompt ausdrücklich **„Startseite ersetzen: JA“**: ebenso umstellen, auch wenn es schon eine
+  Website mit eigener Startseite gibt (die alte Startseite bleibt als Seite erhalten, alte Werte notieren).
+- Sonst, bei bestehender Website mit eigener Startseite: **nicht** ersetzen. Die neue Seite ist
   unter ihrer eigenen Adresse live; das Ersetzen der Startseite ist die erste Frage danach.
 
 Cache leeren, falls ein Cache-Plugin aktiv ist (Falle 7). Dann **ausgeloggt** prüfen (frischer
