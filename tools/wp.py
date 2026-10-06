@@ -879,7 +879,7 @@ KATEGORIEN = {
                    "shield", "defender", "ninjafirewall"),
     "seo": ("wordpress-seo", "yoast", "seo-by-rank-math", "rank-math", "all-in-one-seo", "seopress",
             "the-seo-framework"),
-    "cookie": ("complianz", "borlabs", "cookie-notice", "real-cookie-banner", "cookieyes",
+    "cookie": ("complianz", "borlabs", "cookie-notice", "real-cookie-banner", "cookieyes", "wpconsent",
                "cookie-law-info", "gdpr-cookie", "usercentrics", "iubenda"),
     "baukasten": ("elementor", "divi", "beaver", "wpbakery", "js_composer", "oxygen", "bricks"),
 }
@@ -992,6 +992,11 @@ def cmd_check(a):
     if not cfg.get("template"):
         wahl = next((v for v in LEER_VORLAGEN if v in vorlagen), None) or next(
             (v for v in vorlagen if "blank" in v.lower() or "canvas" in v.lower()), None)
+        if not wahl and not vorlagen and gefunden["baukasten"] and any(
+                "elementor" in n.lower() for n in gefunden["baukasten"]):
+            # Neuere WordPress-Versionen nennen die Vorlagen nicht mehr im Schema.
+            # Elementor bringt "elementor_canvas" immer mit; testseite prüft das echt.
+            wahl = "elementor_canvas"
         if wahl:
             cfg["template"] = wahl
             print(f"  Vorlage '{wahl}' gewählt: leere Seite ohne Theme-Kopf und -Fuß, "
@@ -1023,7 +1028,17 @@ def cmd_testseite(a):
     daten = {"title": "Claude-Test (wird sofort gelöscht)", "content": probe, "status": "draft"}
     if cfg.get("template"):
         daten["template"] = cfg["template"]
-    p = wp.post("/wp/v2/pages", daten)
+    try:
+        p = wp.post("/wp/v2/pages", daten)
+    except WPFehler as ex:
+        if "template" not in ex.msg.lower() or not daten.get("template"):
+            raise
+        print(f"  WEG Vorlage '{daten['template']}' kennt WordPress nicht. Ohne Vorlage weiter; "
+              "Theme-Kopf/-Fuß dann per theme_ausblenden (Skill einrichten, Schritt 4).")
+        cfg["template"] = ""
+        schreib_json(CONFIG, cfg)
+        daten.pop("template")
+        p = wp.post("/wp/v2/pages", daten)
     pid = p["id"]
     try:
         r = wp.get(f"/wp/v2/pages/{pid}", context="edit")
@@ -1043,7 +1058,8 @@ def cmd_testseite(a):
         else:
             print("  WEG Skript fehlt in der ausgelieferten Fassung")
         if cfg.get("template"):
-            print(f"  Vorlage: {r.get('template') or 'Standard'}")
+            ok = r.get("template") == cfg["template"]
+            print(f"  {'OK ' if ok else 'ANDERS'} Vorlage: {r.get('template') or 'Standard'}")
     finally:
         wp.delete(f"/wp/v2/pages/{pid}", force="true")
         print(f"Testseite {pid} gelöscht.")
