@@ -15,6 +15,8 @@ Befehle (Details: python3 tools/wp.py <befehl> -h):
   live SLUG … --ja       Seite öffentlich schalten (ohne Passwort)
   startseite SLUG --ja   Seite als Startseite der Website festlegen
   ablegen SEITE … --ja   alte Seiten auf Entwurf setzen, Adresse freimachen (löscht nichts)
+  api METHODE PFAD …     alles andere in WordPress (Beiträge, Menüs, Medien, Plugins, Einstellungen);
+                         schreibende Aufrufe werden protokolliert, vorheriger Stand gesichert
   wiederherstellen ID …  abgelegte Seiten zurückholen
   seiten                 Seiten in WordPress und hier im Repo auflisten
 
@@ -1123,6 +1125,53 @@ def cmd_wiederherstellen(a):
         schreib_json(ABGELEGT, liste)
 
 
+PROTOKOLL = ROOT / "docs" / "protokoll.md"
+
+
+def protokollieren(methode: str, pfad: str, notiz: str = ""):
+    """Jede schreibende Änderung in WordPress festhalten (nachvollziehbar, zurückdrehbar)."""
+    import datetime
+    if not PROTOKOLL.exists():
+        PROTOKOLL.write_text("# Änderungsprotokoll WordPress\n\nJede Änderung über tools/wp.py api, "
+                             "neueste unten.\n\n", encoding="utf-8")
+    zeit = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    with PROTOKOLL.open("a", encoding="utf-8") as f:
+        f.write(f"- {zeit} · `{methode} {pfad}`{' · ' + notiz if notiz else ''}\n")
+
+
+def cmd_api(a):
+    """Freier Zugriff auf die WordPress-Schnittstelle: Beiträge, Menüs, Medien, Plugins, Einstellungen."""
+    wp = wp_verbinden()
+    methode = a.methode.upper()
+    query = dict(q.split("=", 1) for q in a.query)
+    daten = json.loads(a.daten) if a.daten else None
+    if methode == "DELETE" and query.get("force") in ("true", "1") and not a.endgueltig:
+        fail("force=true löscht endgültig (kein Papierkorb). Ohne force landet es im Papierkorb und ist "
+             "30 Tage zurückholbar. Endgültig nur mit --endgueltig, wenn Sabine das ausdrücklich will.")
+    if methode != "GET":
+        vorher = None
+        if methode in ("POST", "PUT", "PATCH", "DELETE") and re.search(r"/\d+$", a.pfad):
+            try:
+                vorher = wp.get(a.pfad, context="edit")
+            except WPFehler:
+                pass
+        if vorher is not None:
+            sicherung = ROOT / "docs" / "sicherungen"
+            sicherung.mkdir(parents=True, exist_ok=True)
+            import datetime
+            name = re.sub(r"[^a-z0-9]+", "-", a.pfad.lower()).strip("-")
+            datei = sicherung / f"{datetime.datetime.now():%Y%m%d-%H%M%S}_{name}.json"
+            schreib_json(datei, vorher)
+    res = wp.req(methode, a.pfad, json_daten=daten, query=query)
+    if methode != "GET":
+        notiz = a.notiz or ""
+        if vorher is not None:
+            notiz += f" (Stand vorher: docs/sicherungen/{datei.name})"
+        protokollieren(methode, a.pfad, notiz.strip())
+    text = json.dumps(res, ensure_ascii=False, indent=2)
+    print(text if len(text) <= a.max else text[:a.max] + f"\n… ({len(text)} Zeichen, mit --max mehr zeigen)")
+
+
 def cmd_seiten(a):
     wp = wp_verbinden()
     lokal = {}
@@ -1446,6 +1495,16 @@ def main(argv=None):
     x.add_argument("slugs", nargs="+")
     x.add_argument("--ja", action="store_true")
     x.set_defaults(f=cmd_live)
+
+    x = sub.add_parser("api", help="freier Zugriff auf die WordPress-Schnittstelle")
+    x.add_argument("methode", help="GET, POST, DELETE")
+    x.add_argument("pfad", help="z. B. /wp/v2/posts, /wp/v2/plugins, /wp/v2/menu-items, /wp/v2/settings")
+    x.add_argument("query", nargs="*", help="Parameter als name=wert, z. B. per_page=50 context=edit")
+    x.add_argument("--daten", help="JSON für POST, z. B. '{\"status\":\"publish\"}'")
+    x.add_argument("--notiz", help="kurz, wofür (kommt ins Protokoll)")
+    x.add_argument("--endgueltig", action="store_true", help="DELETE mit force=true erlauben")
+    x.add_argument("--max", type=int, default=6000)
+    x.set_defaults(f=cmd_api)
 
     x = sub.add_parser("ablegen", help="alte Seiten auf Entwurf, Adresse frei (löscht nichts)")
     x.add_argument("seiten", nargs="+", help="Adresse (slug) oder ID")

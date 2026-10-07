@@ -125,10 +125,10 @@ brechen: dann die Seite dort ausschließen.
 |---|---|---|
 | entwurf | nur eingeloggt | `push <slug> --entwurf` |
 | vorschau | alle mit Vorschau-Passwort (aus `.env`) | `push <slug>` (Standard) |
-| live | alle | `live <slug> --ja` (nur nach Sabines Ja) |
+| live | alle | `live <slug> --ja` (Sabines Auftrag genügt) |
 
 Eine Seite, die schon **live** ist, ändert `push` nur mit `--ja-live`, weil die Änderung dann sofort
-für alle sichtbar ist. Vorher Sabine fragen.
+für alle sichtbar ist. Hat Sabine die Änderung beauftragt, ist das ihr Ja: direkt mit `--ja-live`.
 
 Achtung Menü: Hat ein WordPress-Menü „Automatisch neue Seiten hinzufügen“ aktiv, landen auch
 Vorschauseiten im Live-Menü der alten Website. `check` warnt davor. Den Haken vor dem ersten Push

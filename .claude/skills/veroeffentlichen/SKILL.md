@@ -5,8 +5,8 @@ description: Schaltet Seiten der Website von Sabine Hoeppner-Plischke öffentlic
 
 # Veröffentlichen
 
-Öffentlich ist öffentlich: Jeder Schritt hier braucht **Sabines ausdrückliches Ja im Chat**, vorher
-in einem Satz erklärt, was danach für Besucher anders ist. Lies vorher den Skill `wordpress`.
+Sabine hat freie Hand: Ihr Auftrag im Chat ist das Ja (CLAUDE.md, Regel 1). Jeden Schritt in einem
+Satz ankündigen (was danach für Besucher anders ist), dann ausführen. Lies vorher den Skill `wordpress`.
 
 Zuerst klären, welcher Fall vorliegt:
 
@@ -15,7 +15,7 @@ Zuerst klären, welcher Fall vorliegt:
 Text, Bild, neuer Menüpunkt auf einer öffentlichen Seite. Ablauf:
 1. Im Repo ändern, `python3 tools/wp.py bauen <slug>`, lokal zeigen (`dist/<slug>.vorschau.html` über
    `python3 tools/wp.py server`), Sabine sagt „passt“.
-2. Sabine fragen: „Soll das jetzt für alle sichtbar werden?“ Bei Ja:
+2. Hat Sabine gesagt, es soll online: direkt; sonst kurz fragen, ob es gleich für alle sichtbar sein soll:
    `python3 tools/wp.py push <slug> --ja-live` (Kopf/Fuß/Design geändert: `push --alle --ja-live`).
 3. Verifikationsprotokoll (Skill `wordpress`) auf der Live-Seite, ausgeloggt. Bei Fehlern sofort
    zurück: `git checkout HEAD~1 -- <geänderte Dateien>`, erneut `push … --ja-live`, dann reparieren.
@@ -27,7 +27,7 @@ Text, Bild, neuer Menüpunkt auf einer öffentlichen Seite. Ablauf:
 2. Impressum und Datenschutz sind von der Seite aus erreichbar (Pflicht für jede öffentliche Seite).
    Fehlen sie in unserem Fuß: auf die bestehenden Seiten der alten Website verlinken (normale URL).
 3. Hat die Seite ein Formular: einmal mit Sabines eigener Adresse testen (Bestätigungsmail kommt an?).
-4. Sabine fragen. Bei Ja:
+4. Live schalten (ihr Auftrag genügt):
    ```bash
    python3 tools/wp.py live <slug> --ja
    ```
@@ -37,8 +37,8 @@ Text, Bild, neuer Menüpunkt auf einer öffentlichen Seite. Ablauf:
 
 ## Fall B: Umstieg, die neue Website ersetzt eine bestehende (oder geht erstmals online)
 
-**Sabine entscheidet, Claude führt aus.** Es ist ihre Website. Haken für Haken mit ihr durchgehen,
-jeden Schritt in einem Satz ankündigen, auf ihr Ja hin selbst ausführen. Alles ist umkehrbar: Alte
+**Sabine entscheidet, Claude führt aus.** Es ist ihre Website. Die Liste zügig abarbeiten, jeden
+Schritt in einem Satz ankündigen und selbst ausführen; nur Unklares fragen. Alles ist umkehrbar: Alte
 Seiten werden abgelegt (Entwurf, Adresse `alt-…`), nie gelöscht. Simon nur bei Hosting, Kosten oder
 Rechtsfragen.
 

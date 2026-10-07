@@ -1,29 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 tools/wp.py check)",
-      "Bash(python3 tools/wp.py testseite)",
-      "Bash(python3 tools/wp.py seiten)",
-      "Bash(python3 tools/wp.py bauen:*)",
-      "Bash(python3 tools/wp.py server:*)",
-      "Bash(python3 tools/wp.py neu:*)",
-      "Bash(python3 tools/wp.py importieren:*)",
-      "Bash(python3 tools/wp.py push:*)",
+      "Bash(python3 tools/wp.py:*)",
       "Bash(git status:*)",
       "Bash(git pull:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "mcp__playwright",
-      "Bash(python3 tools/wp.py live:*)",
-      "Bash(python3 tools/wp.py startseite:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git checkout:*)",
       "WebSearch",
-      "WebFetch",
-      "Bash(python3 tools/wp.py ablegen:*)",
-      "Bash(python3 tools/wp.py wiederherstellen:*)"
+      "WebFetch"
     ],
     "deny": [
       "Read(./.env)"

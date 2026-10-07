@@ -65,8 +65,8 @@ Hintergrund), Desktop und Handy. Passt es zur Startseite? Dann:
 python3 tools/wp.py push --alle    # Menü ist auf allen Seiten neu
 ```
 
-Ist eine Seite schon live, verlangt `push` `--ja-live`. Dann Sabine fragen, ob die Menüänderung
-jetzt sichtbar werden darf, oder nur die neue Seite pushen und das Menü später.
+Ist eine Seite schon live, verlangt `push` `--ja-live`. Will Sabine die neue Seite online haben,
+ist das ihr Ja: `push --alle --ja-live`, neue Seite `live <slug> --ja`.
 
 ## 5. Prüfen, zeigen, speichern
 

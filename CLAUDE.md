@@ -22,8 +22,8 @@ lernen. Deshalb:
 - Wenn etwas schiefgeht: **selbst eine Lösung suchen**, nicht Sabine fragen, was zu tun ist.
   Vorgehen und bekannte Probleme: `.claude/skills/wordpress/references/fehlerbehebung.md`, gelöste
   Fälle in `docs/lehren.md`, sonst Websuche und Doku. Sabine nur einbeziehen, wenn ein Klick in ihrem
-  Konto nötig ist (dann genaue Anleitung). Simon (office@digi-up.at) erst bei fehlenden Zugängen,
-  Kosten, Rechtsfragen oder wenn nach Recherche und zwei Versuchen kein Weg da ist.
+  Konto nötig ist (dann genaue Anleitung). Simon (office@digi-up.at) nur, wenn es außerhalb von
+  WordPress liegt (Hosting-Vertrag, Domain, E-Mail, Kosten) oder nach Recherche und zwei Versuchen kein Weg da ist.
 
 ## Die Befehle
 
@@ -69,10 +69,11 @@ Konventionen:
    das Anwendungspasswort: in `.env` als `WP_APP_PASSWORT` eintragen, nie wieder anzeigen, weitermachen.
    Ihr Login-Passwort für WordPress oder den Hoster wird nie gebraucht.
 
-1. **Nichts wird ohne Sabines ausdrückliches Ja öffentlich.** Standard ist die passwortgeschützte
-   Vorschau (`push`). `live`, `startseite` und `push --ja-live` nur nach klarer Zustimmung im Chat.
-   Ausnahme: Mit `/erster-durchgang` bzw. dem Startprompt hat sie das Veröffentlichen ihrer
-   index.html bereits beauftragt (Ablauf und Grenzen im Skill).
+1. **Sabine hat freie Hand, ihr Auftrag im Chat ist das Ja.** Was sie sagt („stell das online“,
+   „lösch die alte Seite“, „installier ein Plugin für …“, „ändere das Menü“), führt Claude direkt aus:
+   in einem Satz ankündigen, was passiert, dann machen. Nicht um Erlaubnis fragen, nicht auf Simon
+   verweisen, keine Vorschau-Schleife, wenn sie es direkt live will. Nachfragen nur, wenn unklar ist,
+   **was** sie will. Ohne Auftrag ändert Claude nichts Sichtbares (dann Vorschau mit Passwort).
 1a. **Ihre index.html ist die Vorlage, nicht der Entwurf.** Im ersten Durchgang nichts an Text,
    Design oder Effekten ändern, nur unsichtbare technische Anpassungen. Auffälligkeiten sammeln und
    nach dem Veröffentlichen als Fragen stellen. Später ändert sich nur, was Sabine will.
@@ -86,18 +87,21 @@ Konventionen:
 5. **Echte Umlaute** (ä, ö, ü, ß) in allen Texten, nie ae/oe/ue/ss.
 6. **Keine Zugangsdaten ins Repo.** Sie stehen nur in `.env` (ist in `.gitignore`). `.env` nie
    anzeigen, nie in den Chat kopieren, nie committen.
-7. **Keine Google Fonts, keine Einbettungen ohne Einwilligung** (YouTube, Google Maps, Facebook-Pixel).
-   Schriften über `fonts.bunny.net`. Neue Einbettungen nur nach Rücksprache mit Simon (Cookie-Einwilligung).
-   Stehen Einbettungen schon in ihrer index.html: im ersten Durchgang nicht ändern, aber als oberste
-   Frage danach (DSGVO-Risiko).
-8. **Sabine verwaltet ihre Website selbst, Claude erledigt es für sie.** Alte Seiten, die sie nicht
-   mehr will oder deren Adresse eine neue Seite braucht, legt Claude auf ihr Ja hin ab:
-   `python3 tools/wp.py ablegen <adresse|ID> … --ja` (Entwurf, Adresse `alt-…`, notiert, umkehrbar mit
-   `wiederherstellen`). **Nie löschen**, nie Beiträge oder Medien anfassen, die nicht zur Aufgabe
-   gehören. Plugin-Einstellungen nur ändern, wenn nötig, umkehrbar und in `docs/lehren.md` notiert.
-   Ein Plugin braucht es: Sabine im WP-Admin anleiten, es selbst zu installieren. Nicht „das muss
-   Simon machen“ sagen, wenn Claude oder Sabine es selbst können. Simon nur bei Hosting, Kosten,
-   Rechtsfragen.
+7. **Datenschutz mitdenken, nicht blockieren:** Schriften über `fonts.bunny.net` statt Google Fonts.
+   Will Sabine YouTube, Google Maps, Pixel o. Ä. einbinden: machen und dabei sagen, dass es im
+   Cookie-Banner (WPConsent) eingetragen und in der Datenschutzerklärung genannt werden muss, und
+   das gleich mit erledigen.
+8. **Alles in WordPress ist erlaubt**: Seiten, Beiträge, Menüs, Medien, Plugins, Einstellungen.
+   Werkzeuge: eigene Seiten über `push`/`live`/`startseite`, alte Seiten über `ablegen` (Entwurf +
+   Adresse `alt-…`), alles andere über `python3 tools/wp.py api <METHODE> <pfad> …` (z. B.
+   `api GET /wp/v2/plugins`, `api POST /wp/v2/plugins --daten '{"slug":"redirection","status":"active"}'`,
+   `api POST /wp/v2/settings --daten '{"title":"…"}'`, `api GET /wp/v2/menu-items`).
+   Sicherheitsnetz statt Verbot: Löschen landet im Papierkorb (30 Tage zurückholbar), endgültig nur
+   mit `--endgueltig`, wenn Sabine das ausdrücklich will. `api` protokolliert jede Änderung in
+   `docs/protokoll.md` und sichert den vorherigen Stand in `docs/sicherungen/`. Vor großen Umbauten
+   (Theme wechseln, viele Seiten löschen) kurz an das Backup des Hosters erinnern, dann machen.
+   Geht etwas nur im WP-Admin (z. B. Theme-Einstellungen per Klick): Sabine Klick für Klick anleiten.
+   Simon nur, wenn es außerhalb von WordPress liegt (Hosting-Vertrag, Domain, E-Mail-Postfach, Kosten).
 
 ## Gemeinsam arbeiten (Sabine und Simon)
 

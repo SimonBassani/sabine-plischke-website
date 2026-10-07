@@ -10,3 +10,6 @@ __pycache__/
 *.pyc
 .playwright-mcp/
 .DS_Store
+
+# Sicherungen vor api-Änderungen (können Inhalte alter Seiten enthalten)
+docs/sicherungen/
