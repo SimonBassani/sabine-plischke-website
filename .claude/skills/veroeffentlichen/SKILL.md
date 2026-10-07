@@ -37,30 +37,38 @@ Text, Bild, neuer Menüpunkt auf einer öffentlichen Seite. Ablauf:
 
 ## Fall B: Umstieg, die neue Website ersetzt eine bestehende (oder geht erstmals online)
 
-**Nur gemeinsam mit Simon** (office@digi-up.at). Diese Liste ist der Fahrplan für den Termin; nichts
-davon alleine ausführen. Haken für Haken mit Sabine durchgehen.
+**Sabine entscheidet, Claude führt aus.** Es ist ihre Website. Haken für Haken mit ihr durchgehen,
+jeden Schritt in einem Satz ankündigen, auf ihr Ja hin selbst ausführen. Alles ist umkehrbar: Alte
+Seiten werden abgelegt (Entwurf, Adresse `alt-…`), nie gelöscht. Simon nur bei Hosting, Kosten oder
+Rechtsfragen.
 
 Vorher:
-- [ ] **Sicherung** der kompletten alten Website beim Hoster oder per Plugin (z. B. UpdraftPlus).
-      Ohne Sicherung kein Relaunch.
+- [ ] **Sicherung:** Beim Hoster gibt es meist tägliche Backups (united-domains: ja). Sabine fragen, ob
+      sie im Hoster-Menü ein aktuelles Backup sieht; sonst im WP-Admin unter Werkzeuge → Daten
+      exportieren einen Export ziehen lassen. Weil `ablegen` nichts löscht, ist das Risiko klein.
 - [ ] Alle neuen Seiten als Vorschau fertig, geprüft (Protokoll), von Sabine abgenommen.
 - [ ] **Impressum und Datenschutz** neu und vollständig (Datenschutz nennt Bunny Fonts, Hoster,
       Newsletter-Tool, Cookie-Plugin, alles Eingebundene).
-- [ ] Cookie-Einwilligung: nötig, sobald Tracking oder Einbettungen drin sind. Mit Simon entscheiden.
+- [ ] Cookie-Einwilligung: nötig, sobald Tracking oder Einbettungen drin sind. Ein vorhandenes
+      Cookie-Plugin (`check` zeigt es) weiterverwenden. Rechtliche Einschätzung im Zweifel: Simon.
 - [ ] Liste der **alten Adressen** (`python3 tools/wp.py seiten`) und wohin jede künftig führen soll.
       Alte Links bei Google und in Sabines Profilen sollen nicht ins Leere laufen.
 
 Der Wechsel (kurzes Zeitfenster, möglichst abends; gibt es noch keine alten Seiten, entfallen 1 und 6):
-1. Alte Seiten, deren Adresse die neue braucht (z. B. `/ueber-mich/`), im WP-Admin auf **Entwurf**
-   setzen und ihre Adresse in `alt-ueber-mich` ändern. Nicht löschen.
+1. Alte Seiten, deren Adresse die neue braucht (z. B. `/impressum/`), und alte Seiten, die Sabine weg
+   haben will, ablegen: `python3 tools/wp.py ablegen impressum datenschutz agb --ja` (Adresse oder
+   ID; Entwurf + Adresse `alt-…`, notiert in `docs/abgelegte-seiten.json`, zurück mit
+   `python3 tools/wp.py wiederherstellen <ID>`). Die aktuelle Startseite wird übersprungen: erst
+   Schritt 4, dann ablegen.
 2. In `seiten/<slug>/seite.json` steht `wp_slug` bereits richtig; `python3 tools/wp.py push --alle`
    holt jetzt die freien Adressen (statt `-2`). Kontrolle: `python3 tools/wp.py seiten`.
 3. `python3 tools/wp.py live <alle slugs> --ja`
 4. `python3 tools/wp.py startseite start --ja` (gibt die bisherige Einstellung zum Zurückstellen aus,
    notieren).
 5. `python3 tools/wp.py push --alle --ja-live`, damit alle Links die endgültigen Adressen tragen.
-6. Weiterleitungen alter Adressen auf neue (Plugin „Redirection“ oder Yoast Premium), für jede Zeile
-   der Liste von oben.
+6. Weiterleitungen nur für alte Adressen, die es künftig nicht mehr gibt (gleiche Adresse = keine
+   Weiterleitung nötig). Dafür Sabine im WP-Admin das kostenlose Plugin „Redirection“ installieren
+   lassen (Plugins → Installieren → „Redirection“ → Aktivieren) und die Weiterleitungen mit ihr eintragen.
 7. Cache leeren.
 
 Danach prüfen (ausgeloggt, Desktop und Handy): Startseite, jede Seite, Menü, Fuß-Links, Formulare,
@@ -68,6 +76,7 @@ eine alte Adresse leitet richtig um, Konsole fehlerfrei. Im SEO-Plugin bei keine
 „noindex“. Sitemap neu bei der Google Search Console einreichen (falls eingerichtet).
 
 Zurück, falls etwas schiefgeht: Startseite mit den notierten Werten zurückstellen
-(WP-Admin → Einstellungen → Lesen), neue Seiten auf Entwurf, alte Seiten wieder veröffentlichen.
+(WP-Admin → Einstellungen → Lesen), neue Seiten auf Entwurf, alte Seiten mit
+`python3 tools/wp.py wiederherstellen <ID>` zurückholen.
 
 Zum Schluss: `git add -A && git commit -m "Relaunch: neue Website live" && git push`.

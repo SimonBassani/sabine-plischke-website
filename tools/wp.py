@@ -14,6 +14,8 @@ Befehle (Details: python3 tools/wp.py <befehl> -h):
   push SLUG … | --alle   bauen, Bilder hochladen, als Entwurf oder Vorschau nach WordPress
   live SLUG … --ja       Seite öffentlich schalten (ohne Passwort)
   startseite SLUG --ja   Seite als Startseite der Website festlegen
+  ablegen SEITE … --ja   alte Seiten auf Entwurf setzen, Adresse freimachen (löscht nichts)
+  wiederherstellen ID …  abgelegte Seiten zurückholen
   seiten                 Seiten in WordPress und hier im Repo auflisten
 
 Grundsatz: lokal grün heißt nicht live grün. WordPress verändert Inhalte beim Ausliefern.
@@ -1065,6 +1067,62 @@ def cmd_testseite(a):
         print(f"Testseite {pid} gelöscht.")
 
 
+ABGELEGT = ROOT / "docs" / "abgelegte-seiten.json"
+
+
+def _seite_finden(wp: WP, kennung: str) -> dict:
+    felder = "id,slug,status,title,content,parent"
+    if kennung.isdigit():
+        return wp.get(f"/wp/v2/pages/{kennung}", context="edit", _fields=felder)
+    treffer = wp.get("/wp/v2/pages", slug=kennung, status="any", context="edit", _fields=felder)
+    if not treffer:
+        fail(f"Keine Seite mit der Adresse '{kennung}' gefunden ('python3 tools/wp.py seiten' zeigt alle).")
+    return treffer[0]
+
+
+def cmd_ablegen(a):
+    """Alte Seiten (nicht aus diesem Repo) auf Entwurf setzen und Adresse freimachen. Löscht nichts."""
+    if not a.ja:
+        fail("Ablegen nur mit --ja, nachdem Sabine zugestimmt hat (sie entscheidet über ihre Seiten).")
+    wp = wp_verbinden()
+    liste = lies_json(ABGELEGT, []) or []
+    startseite = wp.get("/wp/v2/settings").get("page_on_front")
+    for kennung in a.seiten:
+        sp = _seite_finden(wp, kennung)
+        titel = sp["title"]["raw"] if isinstance(sp.get("title"), dict) else sp.get("title")
+        if "<!-- sr-werkzeug:" in (sp.get("content") or {}).get("raw", ""):
+            print(f"  übersprungen: {sp['slug']} (ID {sp['id']}) stammt aus diesem Repo")
+            continue
+        if sp["id"] == startseite:
+            print(f"  übersprungen: {sp['slug']} (ID {sp['id']}) ist die aktuelle Startseite. "
+                  "Erst neue Startseite setzen (startseite <slug> --ja).")
+            continue
+        neuer_slug = sp["slug"] if sp["slug"].startswith("alt-") else f"alt-{sp['slug']}"
+        res = wp.post(f"/wp/v2/pages/{sp['id']}", {"status": "draft", "slug": neuer_slug})
+        liste.append({"id": sp["id"], "slug": sp["slug"], "status": sp["status"], "titel": titel,
+                      "neuer_slug": res.get("slug"), "abgelegt_gmt": res.get("modified_gmt")})
+        schreib_json(ABGELEGT, liste)
+        print(f"  abgelegt: /{sp['slug']}/ \"{titel}\" (ID {sp['id']}) -> Entwurf, Adresse jetzt "
+              f"/{res.get('slug')}/")
+    print("\nNotiert in docs/abgelegte-seiten.json. Zurückholen: python3 tools/wp.py wiederherstellen <ID>")
+    print("Jetzt die neuen Seiten neu pushen, damit sie die freien Adressen bekommen: push --alle")
+
+
+def cmd_wiederherstellen(a):
+    wp = wp_verbinden()
+    liste = lies_json(ABGELEGT, []) or []
+    for kennung in a.ids:
+        eintrag = next((e for e in reversed(liste) if str(e["id"]) == kennung), None)
+        if not eintrag:
+            fail(f"ID {kennung} steht nicht in docs/abgelegte-seiten.json.")
+        res = wp.post(f"/wp/v2/pages/{eintrag['id']}", {"status": eintrag["status"], "slug": eintrag["slug"]})
+        print(f"  zurück: ID {eintrag['id']} \"{eintrag['titel']}\" -> {res.get('status')}, /{res.get('slug')}/")
+        if res.get("slug") != eintrag["slug"]:
+            print("    Adresse ist inzwischen belegt (neue Seite?), WordPress hat sie angepasst.")
+        liste.remove(eintrag)
+        schreib_json(ABGELEGT, liste)
+
+
 def cmd_seiten(a):
     wp = wp_verbinden()
     lokal = {}
@@ -1388,6 +1446,15 @@ def main(argv=None):
     x.add_argument("slugs", nargs="+")
     x.add_argument("--ja", action="store_true")
     x.set_defaults(f=cmd_live)
+
+    x = sub.add_parser("ablegen", help="alte Seiten auf Entwurf, Adresse frei (löscht nichts)")
+    x.add_argument("seiten", nargs="+", help="Adresse (slug) oder ID")
+    x.add_argument("--ja", action="store_true")
+    x.set_defaults(f=cmd_ablegen)
+
+    x = sub.add_parser("wiederherstellen", help="abgelegte Seiten zurückholen")
+    x.add_argument("ids", nargs="+")
+    x.set_defaults(f=cmd_wiederherstellen)
 
     x = sub.add_parser("startseite", help="als Startseite festlegen")
     x.add_argument("slug")

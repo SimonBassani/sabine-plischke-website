@@ -21,7 +21,9 @@
       "Bash(git push:*)",
       "Bash(git checkout:*)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Bash(python3 tools/wp.py ablegen:*)",
+      "Bash(python3 tools/wp.py wiederherstellen:*)"
     ],
     "deny": [
       "Read(./.env)"

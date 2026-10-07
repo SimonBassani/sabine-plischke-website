@@ -15,7 +15,8 @@ werden, und Simon soll nur bei Dingen gerufen werden, die Claude wirklich nicht 
 5. **Festhalten:** Problem, Ursache und Lösung als kurzer Eintrag in `docs/lehren.md`, mit Datum.
    Beim nächsten Mal steht es dann da.
 
-Selbst erledigen darf Claude: alles im Repo, Seiten über `tools/wp.py`, Einstellungen im WP-Admin
+Selbst erledigen darf Claude: alles im Repo, Seiten über `tools/wp.py` (auch alte Seiten ablegen
+und Startseite umstellen, wenn Sabine Ja sagt), Einstellungen im WP-Admin
 **über Sabine** (genaue Klickanleitung geben) oder per REST, wenn umkehrbar und vorher notiert.
 
 **Eskalieren an Simon (office@digi-up.at)** nur bei: Zugang, den Sabine nicht hat (Hosting, FTP,

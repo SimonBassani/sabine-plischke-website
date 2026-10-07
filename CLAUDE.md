@@ -90,11 +90,14 @@ Konventionen:
    Schriften über `fonts.bunny.net`. Neue Einbettungen nur nach Rücksprache mit Simon (Cookie-Einwilligung).
    Stehen Einbettungen schon in ihrer index.html: im ersten Durchgang nicht ändern, aber als oberste
    Frage danach (DSGVO-Risiko).
-8. **Bestehende Seiten nicht anfassen.** Was schon in WordPress steht und nicht aus diesem Repo
-   kommt (alte Seiten, Beiträge, Plugins, Menüs), bleibt unverändert, bis der Umstieg gemeinsam mit
-   Simon live geht. Nichts in WordPress löschen. Plugin-Einstellungen nur ändern, wenn es zur Lösung
-   eines Problems nötig, umkehrbar und in `docs/lehren.md` notiert ist. Plugins installieren,
-   löschen, Updates, Hosting: Sache von Simon.
+8. **Sabine verwaltet ihre Website selbst, Claude erledigt es für sie.** Alte Seiten, die sie nicht
+   mehr will oder deren Adresse eine neue Seite braucht, legt Claude auf ihr Ja hin ab:
+   `python3 tools/wp.py ablegen <adresse|ID> … --ja` (Entwurf, Adresse `alt-…`, notiert, umkehrbar mit
+   `wiederherstellen`). **Nie löschen**, nie Beiträge oder Medien anfassen, die nicht zur Aufgabe
+   gehören. Plugin-Einstellungen nur ändern, wenn nötig, umkehrbar und in `docs/lehren.md` notiert.
+   Ein Plugin braucht es: Sabine im WP-Admin anleiten, es selbst zu installieren. Nicht „das muss
+   Simon machen“ sagen, wenn Claude oder Sabine es selbst können. Simon nur bei Hosting, Kosten,
+   Rechtsfragen.
 
 ## Gemeinsam arbeiten (Sabine und Simon)
 
