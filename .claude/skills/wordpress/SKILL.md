@@ -111,7 +111,7 @@ brechen: dann die Seite dort ausschließen.
 - **Shortcodes:** `[gallery]`, `[irgendwas_mit_unterstrich]` im Text ersetzt WordPress. Das Werkzeug warnt.
 - **SVG-Dateien** lässt WordPress nicht hochladen. SVG-Code direkt ins HTML oder als PNG/WebP.
 - **Formulare** verschicken nichts von selbst. Ziel klären (Newsletter-Tool, Kontaktformular-Plugin)
-  und mit Simon einbauen.
+  und einbauen. Ist ein Formular-Plugin aktiv (`check`, z. B. WPForms), dessen Formular nutzen.
 - **Google Fonts, YouTube, Google Maps, Pixel** übertragen ohne Einwilligung Daten (DSGVO).
   Schriften über `fonts.bunny.net` (macht der Import automatisch), Einbettungen nur mit Simon.
 - **Bilder** unter 300 KB halten (WebP oder JPG, 1920 px breit reicht). Große Fotos bremsen am Handy.

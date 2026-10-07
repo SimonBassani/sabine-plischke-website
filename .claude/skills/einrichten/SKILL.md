@@ -111,7 +111,7 @@ Recht, Sicherheits-Plugin). `ACHTUNG Skript wird verändert` ist bekannt und dur
 abgefangen.
 
 **Keine leere Seitenvorlage?** Dann zeigt WordPress den Kopf und Fuß des Themes über und unter
-unseren Seiten. Zwei Wege, mit Sabine entscheiden (Simon fragen, wenn unklar):
+unseren Seiten. Zwei Wege, mit Sabine entscheiden:
 - Theme-Kopf und -Fuß nur auf unseren Seiten ausblenden: Nach dem ersten Push (Schritt aus
   `/importieren`) die Vorschau mit Playwright öffnen, die Elemente von Theme-Kopf und -Fuß finden
   (`document.querySelectorAll('body > * , .wp-site-blocks > *')`, typisch

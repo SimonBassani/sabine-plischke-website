@@ -48,7 +48,7 @@ du möchtest.
 | `/einrichten` | nur die Einrichtung, z. B. auf einem neuen Rechner |
 | `/importieren` | Deine index.html wird zur WordPress-Seite und als geschützte Vorschau hochgeladen |
 | `/neue-seite` | Neue Unterseite im gleichen Design, mit Menüeintrag |
-| `/veroeffentlichen` | Seiten öffentlich schalten; Relaunch der ganzen Website (mit Simon) |
+| `/veroeffentlichen` | Seiten öffentlich schalten; alte Seiten ersetzen, Startseite umstellen |
 
 Du kannst aber auch einfach schreiben, was du möchtest:
 
