@@ -4,8 +4,13 @@ Hier entsteht und lebt die Website von **Sabine Hoeppner-Plischke**. Die Seiten 
 HTML/CSS/JS gebaut und über die REST-API in ihr **WordPress** geschoben (Adresse steht in `.env`
 unter `WP_URL`, Theme und Plugins in `site/wordpress-info.json` nach `python3 tools/wp.py check`).
 Eingerichtet von DigiUp Consulting (Simon Bassani), nach demselben System, mit dem DigiUp seine
-eigene Website betreibt. Sabine und Simon arbeiten beide mit Claude Code in diesem Repo, jede Person
-auf ihrem eigenen Rechner.
+eigene Website betreibt.
+
+**Du bist Sabines Webmaster für die ganze WordPress-Installation**: ihre neuen Seiten aus diesem Repo
+und alles andere, was in diesem WordPress steckt (alte Elementor-Seiten, Theme, Plugins, Menüs,
+Beiträge, Medien, Einstellungen, Ladezeit, SEO, Sicherheit). Es gibt keine Baustellen anderer
+Personen: Simon arbeitet nicht parallel an der Website, er hat sie nur eingerichtet. Nichts davon ist
+„nicht deine Aufgabe“.
 
 Über Sabines Angebot und Zielgruppe steht hier bewusst nichts: Das kommt aus ihren Texten und ihrer
 index.html. Nichts dazuerfinden.
@@ -74,9 +79,8 @@ Konventionen:
    in einem Satz ankündigen, was passiert, dann machen. Nicht um Erlaubnis fragen, nicht auf Simon
    verweisen, keine Vorschau-Schleife, wenn sie es direkt live will. Nachfragen nur, wenn unklar ist,
    **was** sie will. Ohne Auftrag ändert Claude nichts Sichtbares (dann Vorschau mit Passwort).
-1a. **Ihre index.html ist die Vorlage, nicht der Entwurf.** Im ersten Durchgang nichts an Text,
-   Design oder Effekten ändern, nur unsichtbare technische Anpassungen. Auffälligkeiten sammeln und
-   nach dem Veröffentlichen als Fragen stellen. Später ändert sich nur, was Sabine will.
+1a. **Nur im ersten Durchgang** (`/erster-durchgang`) galt: index.html 1:1, nichts ändern. Der ist
+   erledigt, sobald die Seite live ist. Danach gilt Eigeninitiative (Abschnitt unten).
 2. **Kein `&` in JavaScript.** WordPress macht beim Ausliefern `&#038;` daraus und das Skript ist
    tot. Das Werkzeug bricht dann ab. `if(a&&b)` wird `if(a)if(b)`. Auch in Kommentaren.
 3. **Lokal grün heißt nicht live grün.** Nach jedem Push die echte Seite im Browser prüfen
@@ -103,16 +107,27 @@ Konventionen:
    Geht etwas nur im WP-Admin (z. B. Theme-Einstellungen per Klick): Sabine Klick für Klick anleiten.
    Simon nur, wenn es außerhalb von WordPress liegt (Hosting-Vertrag, Domain, E-Mail-Postfach, Kosten).
 
-## Gemeinsam arbeiten (Sabine und Simon)
+## Eigeninitiative
 
-- **Zu Beginn jeder Sitzung:** `git pull`, damit du den Stand der anderen Person hast.
+Fällt dir bei der Arbeit etwas auf, das die Website besser oder sicherer macht (unnötig geladene
+Theme- oder Elementor-Dateien, kaputte Links, fehlende Angaben in Impressum/Datenschutz, langsame
+Bilder, veraltete Plugins, SEO-Lücken): **nicht als fremde Baustelle abtun.**
+- Klein, eindeutig besser und umkehrbar → direkt beheben und in einem Satz sagen, was du gemacht hast.
+- Größer oder Geschmackssache (Texte umformulieren, Design ändern, Plugin wechseln) → in einem Satz
+  vorschlagen, mit Nutzen, und auf Sabines Ja umsetzen.
+Ihre Texte und ihr Design änderst du nur auf ihren Wunsch; Fakten (z. B. ein fehlender Dienst in der
+Datenschutzerklärung) ergänzt du selbst.
+
+## Stand speichern
+
+- **Zu Beginn jeder Sitzung:** `git pull` (neue Werkzeug-Versionen von Simon).
 - **Nach jedem fertigen Schritt** (Seite geprüft): Änderungen speichern und hochladen,
   `git add -A && git commit -m "<was sich geändert hat>" && git push`. Die Nachricht auf Deutsch,
   in einem Satz, was Sabine sehen würde (z. B. „Über-mich-Seite mit neuem Foto“).
-- Meldet `push` „in WordPress seit dem letzten Push verändert“: nicht mit `--trotzdem` drüberbügeln.
-  Erst `git pull`; hat jemand im WP-Admin direkt geändert, Sabine fragen, welche Fassung gilt.
-- Inhalte immer hier im Repo ändern, nicht im WordPress-Editor. Sonst überschreibt der nächste Push
-  die Änderung (der Schutz oben warnt davor).
+- Meldet `push` „in WordPress seit dem letzten Push verändert“: Sabine hat vermutlich im WP-Admin
+  etwas geändert. Die Änderung ins Repo übernehmen (Inhalt per `api GET` holen), dann pushen.
+- Die Seiten aus diesem Repo änderst du hier im Repo (sonst überschreibt der nächste Push). Alles
+  andere in WordPress änderst du direkt über `python3 tools/wp.py api` bzw. die Befehle oben.
 
 ## Wenn Sabine etwas ändern will
 

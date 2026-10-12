@@ -43,7 +43,7 @@ Dann `seiten/<slug>/inhalt.html` schreiben:
 **Impressum und Datenschutz:** keine Texte erfinden oder aus Vorlagen zusammenstellen. Sabine liefert
 die Angaben (Name, Anschrift, Kontakt, USt-IdNr., ggf. Kammer und Berufsrecht) bzw. einen
 Generator-Text (in Deutschland Impressum nach § 5 DDG, z. B. über e-recht24 oder die IT-Recht Kanzlei). Die Datenschutzerklärung muss Bunny Fonts und alle
-eingebundenen Dienste nennen. Im Zweifel: Simon.
+eingebundenen Dienste nennen. Rechtliche Bewertung im Zweifel: Simon.
 
 ## 3. Menü
 

@@ -113,11 +113,42 @@ brechen: dann die Seite dort ausschließen.
 - **Formulare** verschicken nichts von selbst. Ziel klären (Newsletter-Tool, Kontaktformular-Plugin)
   und einbauen. Ist ein Formular-Plugin aktiv (`check`, z. B. WPForms), dessen Formular nutzen.
 - **Google Fonts, YouTube, Google Maps, Pixel** übertragen ohne Einwilligung Daten (DSGVO).
-  Schriften über `fonts.bunny.net` (macht der Import automatisch), Einbettungen nur mit Simon.
+  Schriften über `fonts.bunny.net` (macht der Import automatisch). Einbettungen im Cookie-Plugin eintragen
+  und in der Datenschutzerklärung nennen, beides selbst erledigen.
 - **Bilder** unter 300 KB halten (WebP oder JPG, 1920 px breit reicht). Große Fotos bremsen am Handy.
 - **Reveal-Animationen:** Wenn Elemente per CSS unsichtbar starten (`opacity:0`) und JavaScript sie
   einblendet, bleibt die Seite bei einem JS-Fehler leer. Besser `.js .reveal{opacity:0}`: das
   Werkzeug setzt die Klasse `js` am `<html>` als allererstes Skript.
+
+## Rezept: Theme- und Elementor-Dateien auf den eigenen Seiten abschalten
+
+Auch auf der leeren Canvas-Vorlage lädt WordPress CSS und JavaScript von Theme (OceanWP) und
+Elementor mit. Unsere Seiten brauchen davon nichts, es kostet nur Ladezeit. Abschalten, nur für Seiten
+aus diesem Repo (erkennbar am Marker `<!-- sr-werkzeug:` im Inhalt):
+
+1. Vorher messen: Playwright auf einer eigenen Seite, `browser_network_requests` (Anzahl CSS/JS von
+   `/themes/` und `/plugins/elementor`), Screenshot Desktop und Handy.
+2. Plugin „Code Snippets“ installieren und aktivieren:
+   `python3 tools/wp.py api POST /wp/v2/plugins --daten '{"slug":"code-snippets","status":"active"}' --notiz "für Asset-Bremse"`
+3. Snippet anlegen (Bereich „nur Frontend“), per REST des Plugins (`api GET /code-snippets/v1/snippets`
+   zeigt, ob es die Schnittstelle gibt; sonst Sabine im WP-Admin unter Snippets → Neu anleiten):
+
+```php
+add_action('wp_enqueue_scripts', function () {
+    if (!is_singular('page')) return;
+    $p = get_post();
+    if (!$p || strpos($p->post_content, '<!-- sr-werkzeug:') === false) return;
+    $weg = '/^(oceanwp|ocean-|elementor|hfe|font-awesome|swiper|e-animation|wp-block-library|classic-theme|global-styles)/';
+    foreach (wp_styles()->queue as $h)  { if (preg_match($weg, $h)) wp_dequeue_style($h); }
+    foreach (wp_scripts()->queue as $h) { if (preg_match($weg, $h)) wp_dequeue_script($h); }
+}, 100);
+```
+
+4. Nachher dieselbe Messung: weniger Anfragen, Seite sieht gleich aus, Konsole fehlerfrei,
+   **Cookie-Banner erscheint weiter** (WPConsent wird nicht abgeschaltet). Alte Elementor-Seiten
+   stichprobenhaft öffnen: unverändert (der Filter greift nur auf unseren Seiten).
+5. Bricht etwas: Snippet deaktivieren (`api` auf das Snippet bzw. WP-Admin → Snippets), fertig.
+6. Ergebnis in `docs/lehren.md` notieren (Anfragen vorher/nachher).
 
 ## Status einer Seite
 
@@ -182,4 +213,4 @@ Nie selbst bauen (Script-Blocking vor der Einwilligung, Protokoll, Widerruf: das
 gepflegtes Plugin). Ein vorhandenes Plugin (Complianz, Borlabs, Real Cookie Banner) umstylen statt
 ersetzen. Complianz nutzt CSS-Variablen `--cmplz_*` (Unterstriche). „Ablehnen“ gleich groß wie
 „Akzeptieren“ lassen. Nach dem Umstylen die Mechanik testen (Ablehnen speichert, Widerruf-Reiter da).
-Braucht die neue Seite gar keine Einbettungen und kein Tracking, reicht oft kein Banner. Mit Simon klären.
+Braucht die Website gar keine Einbettungen und kein Tracking, reicht oft kein Banner. Im Zweifel bleibt es an.

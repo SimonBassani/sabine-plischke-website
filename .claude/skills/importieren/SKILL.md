@@ -41,9 +41,9 @@ Die Ausgabe listet, was noch Handarbeit braucht. Typisch:
 | Bild nicht gefunden | Sabine nach dem Bild fragen; Datei nach `bilder/`, Pfad `bilder/<name>` |
 | Bilder von fremden Servern | herunterladen nach `bilder/` (Lizenz klären, z. B. Unsplash ok, Google-Bildersuche nicht) |
 | Umschreibungen ae/oe/ue | Treffer prüfen und echte Umlaute setzen (Sabines Text sonst unverändert lassen) |
-| Formular | Ziel mit Sabine/Simon klären, bis dahin sichtbar lassen und nicht abschicken |
+| Formular | Ziel mit Sabine klären; vorhandenes Formular-Plugin (z. B. WPForms) oder Newsletter-Tool anbinden |
 | `<h1>` fehlt / mehrfach | genau eine Hauptüberschrift; nur nach Rückfrage ändern |
-| Eingebettetes Video/Karte | mit Simon klären (Einwilligung). Bis dahin Vorschaubild mit Link |
+| Eingebettetes Video/Karte | übernehmen und im Cookie-Plugin eintragen, in der Datenschutzerklärung ergänzen |
 
 Prüfen, bis keine `FEHLER` mehr kommen:
 

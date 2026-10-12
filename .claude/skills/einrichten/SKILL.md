@@ -58,7 +58,7 @@ Fehlt der Bereich „Anwendungspasswörter“:
 - Ein Sicherheits-Plugin blockt ihn (häufig **Wordfence**: Wordfence → Login Security → Settings →
   Haken bei „Disable WordPress application passwords“ entfernen; bei Solid Security / iThemes ähnlich).
 - Der Benutzer ist kein Administrator → mit Admin-Konto einloggen oder Simon fragen.
-- Ist es unklar: Simon kontaktieren, das ist ein Fall für ihn.
+- Ist es unklar: `references/fehlerbehebung.md` im Skill `wordpress`, dann Websuche.
 
 Dann die Datei anlegen, **ohne dass das Passwort durch den Chat geht**:
 
